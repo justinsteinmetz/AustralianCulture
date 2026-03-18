@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fair Go — Australian Culture &amp; Communication</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,900;1,9..144,300;1,9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sun:   #D4921E;
+  --rust:  #B84020;
+  --sky:   #2E6B8A;
+  --bush:  #445830;
+  --dark:  #130D06;
+  --sand:  #EDE0C8;
+  --cream: #FAF6EE;
+  --stone: #8A7660;
+  --mist:  #DDD0BA;
+  --ink:   #1C1208;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Instrument Sans',sans-serif;background:var(--sand);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
+.tag{font-size:.56rem;letter-spacing:.32em;text-transform:uppercase;font-weight:600;color:var(--sun);}
+
+.bp{background:var(--rust);color:var(--cream);border:none;padding:.92rem 2.3rem;font-family:'Instrument Sans',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
+.bp:hover{background:#c94522;transform:translateY(-1px);}
+.bs{background:transparent;border:1px solid rgba(28,18,8,.18);color:var(--ink);padding:.65rem 1.5rem;font-family:'Instrument Sans',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
+.bs:hover{border-color:var(--rust);color:var(--rust);}
+.bn{background:var(--dark);color:var(--cream);border:none;padding:.78rem 1.9rem;font-family:'Instrument Sans',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
+.bn:hover:not(:disabled){background:var(--rust);}
+.bn:disabled{opacity:.2;cursor:default;}
+.blight{background:rgba(250,246,238,.08);color:var(--cream);border:1px solid rgba(250,246,238,.15);padding:.78rem 1.9rem;font-family:'Instrument Sans',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
+.blight:hover{background:rgba(250,246,238,.14);}
+
+/* HOOK */
+#screen-hook{background:var(--dark);position:relative;overflow:hidden;justify-content:center;align-items:center;padding:4rem 2.5rem;text-align:center;}
+#screen-hook::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% 105%,rgba(184,64,32,.22) 0%,transparent 65%),radial-gradient(ellipse 40% 35% at 5% 10%,rgba(212,146,30,.07) 0%,transparent 55%);pointer-events:none;}
+.hook-inner{position:relative;z-index:1;max-width:600px;margin:auto;}
+.hook-eyebrow{font-size:.55rem;letter-spacing:.38em;text-transform:uppercase;font-weight:600;color:var(--sun);margin-bottom:2.6rem;}
+.hook-quote{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(1.8rem,6vw,3.5rem);color:var(--cream);line-height:1.26;margin-bottom:.9rem;}
+.hook-quote em{font-style:normal;color:var(--sun);}
+.hook-attr{font-size:.68rem;letter-spacing:.13em;color:var(--stone);margin-bottom:3rem;}
+.hook-prompt{font-size:.97rem;color:rgba(250,246,238,.65);line-height:1.8;max-width:400px;margin:0 auto 3rem;}
+.hook-prompt strong{color:var(--sand);}
+
+/* QUIZ */
+#screen-quiz{background:var(--cream);}
+.prog{height:2px;background:rgba(28,18,8,.07);}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--rust),var(--sun));transition:width .5s ease;}
+.qwrap{padding:1.8rem 2rem;flex:1;overflow-y:auto;}
+.qbar{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.8rem;padding-bottom:.9rem;border-bottom:1px solid var(--mist);}
+.qlabel{font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;font-weight:600;color:var(--sun);}
+.qcount{font-family:'Fraunces',serif;font-weight:300;font-size:1.2rem;color:var(--stone);}
+.qcount strong{color:var(--ink);font-weight:600;}
+.scene{background:var(--dark);border-radius:2px;padding:1.7rem 1.9rem 1.6rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.scene::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rust),var(--sun) 55%,transparent);}
+.scene-loc{font-size:.54rem;letter-spacing:.28em;text-transform:uppercase;color:var(--sun);margin-bottom:.65rem;font-weight:600;}
+.scene-text{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(1.05rem,2.8vw,1.25rem);color:var(--cream);line-height:1.65;}
+.quiz-q{font-size:.96rem;font-weight:600;margin-bottom:1.1rem;line-height:1.5;color:var(--ink);}
+.opts{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.3rem;}
+.opt{background:var(--sand);border:1.5px solid var(--mist);border-radius:2px;padding:.82rem 1.1rem;text-align:left;cursor:pointer;font-family:'Instrument Sans',sans-serif;font-size:.87rem;line-height:1.5;color:var(--ink);transition:all .14s;}
+.opt:hover:not(:disabled){border-color:var(--rust);background:#f7ede7;}
+.opt.correct{border-color:var(--bush);background:#ecf0e8;color:var(--bush);font-weight:600;}
+.opt.wrong{border-color:var(--rust);background:#f7ebe7;color:var(--rust);}
+.opt:disabled{cursor:default;}
+.reveal{border-left:2px solid var(--sun);background:#f7f0e4;padding:.95rem 1.15rem;border-radius:0 2px 2px 0;font-size:.87rem;line-height:1.8;color:var(--ink);margin-bottom:.7rem;display:none;}
+.reveal.on{display:block;animation:up .28s ease;}
+.reveal strong{color:var(--rust);}
+.crit{border-left:2px solid var(--sky);background:#eaf0f5;padding:.88rem 1.1rem;border-radius:0 2px 2px 0;font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:.92rem;line-height:1.74;color:var(--sky);margin-bottom:.7rem;display:none;}
+.crit.on{display:block;animation:up .28s ease .1s both;}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--mist);}
+
+/* SCENES */
+#screen-scenes{background:var(--sand);}
+.scwrap{padding:1.8rem 2rem;overflow-y:auto;}
+.sc-head{margin-bottom:1.6rem;}
+.sc-title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.12;margin-bottom:.35rem;}
+.sc-title em{font-style:italic;color:var(--rust);}
+.sc-desc{font-size:.87rem;color:var(--stone);line-height:1.68;max-width:500px;}
+.frame{background:var(--dark);border-radius:2px;padding:1.7rem 1.9rem;margin-bottom:1.3rem;border-left:3px solid var(--sun);}
+.frame .tag{display:block;margin-bottom:.6rem;}
+.frame-title{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;color:var(--cream);margin-bottom:.7rem;}
+.frame-body{font-size:.87rem;color:rgba(250,246,238,.72);line-height:1.8;margin-bottom:1rem;}
+.frame-body em{color:var(--sand);font-style:normal;font-weight:600;}
+.frame-q{background:rgba(212,146,30,.12);border-left:2px solid var(--sun);padding:.85rem 1rem;border-radius:0 2px 2px 0;font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:.97rem;color:var(--cream);line-height:1.62;}
+.sc-card{background:var(--cream);border-radius:2px;padding:1.6rem 1.8rem;margin-bottom:1.2rem;border:1px solid var(--mist);}
+.sc-num{font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--stone);margin-bottom:.4rem;}
+.sc-card-title{font-family:'Fraunces',serif;font-size:1.08rem;font-weight:600;margin-bottom:.45rem;}
+.sc-setup{font-size:.85rem;color:var(--stone);line-height:1.65;margin-bottom:.95rem;}
+.exchange{display:flex;flex-direction:column;gap:.42rem;margin-bottom:.95rem;}
+.line{display:flex;gap:.65rem;align-items:flex-start;padding:.52rem .8rem;border-radius:2px;font-size:.87rem;line-height:1.52;}
+.line.a{background:#f3ebe1;}
+.line.b{background:#eaedea;}
+.line.c{background:#e8edf3;}
+.spk{font-size:.58rem;font-weight:600;letter-spacing:.05em;min-width:28px;padding-top:2px;text-transform:uppercase;flex-shrink:0;}
+.line.a .spk{color:var(--rust);}
+.line.b .spk{color:var(--bush);}
+.line.c .spk{color:var(--sky);}
+.line em{color:var(--stone);font-size:.82rem;}
+.prob-flag{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--rust);margin-bottom:.3rem;}
+.prob-body{font-size:.86rem;line-height:1.74;color:var(--ink);background:#f6ebe7;border-left:2px solid var(--rust);padding:.8rem 1rem;border-radius:0 2px 2px 0;margin-bottom:.95rem;}
+.prob-body strong{color:var(--rust);}
+.task{background:var(--dark);color:rgba(250,246,238,.78);padding:.9rem 1.1rem;border-radius:2px;font-size:.86rem;line-height:1.67;}
+.task strong{color:var(--sun);}
+.task em{color:rgba(250,246,238,.55);font-style:italic;}
+
+/* EXIT SCREENS */
+.exit-screen{background:var(--dark);justify-content:center;align-items:center;padding:4rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
+.exit-screen::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 90% 55% at 50% 108%,rgba(184,64,32,.18) 0%,transparent 65%);pointer-events:none;}
+.exit-inner{position:relative;z-index:1;max-width:580px;margin:auto;}
+.exit-tag{font-size:.54rem;letter-spacing:.35em;text-transform:uppercase;font-weight:600;color:var(--sun);margin-bottom:2rem;}
+.exit-quote{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(1.6rem,5.5vw,2.8rem);color:var(--cream);line-height:1.28;margin-bottom:2.5rem;}
+.exit-panel-tag{font-size:.54rem;letter-spacing:.25em;text-transform:uppercase;font-weight:600;color:var(--sun);margin-bottom:.8rem;}
+.exit-body{font-size:.95rem;color:rgba(250,246,238,.78);line-height:1.88;max-width:520px;margin:0 auto 3rem;}
+.exit-body strong{color:var(--sand);}
+.exit-body em{font-style:italic;color:var(--stone);}
+.exit-open{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(1.2rem,3.5vw,1.8rem);color:var(--cream);line-height:1.45;max-width:480px;margin:0 auto 3rem;}
+.exit-nav{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<!-- HOOK -->
+<div id="screen-hook" class="screen active">
+  <div class="hook-inner">
+    <div class="hook-eyebrow">Australian culture · Communication &amp; society</div>
+    <p class="hook-quote">"Australians aren't actually friendly.<br>They just <em>pretend</em> to be."</p>
+    <div class="hook-attr">— A Czech student, six months after moving to Sydney</div>
+    <p class="hook-prompt"><strong>Do you agree?</strong><br>Hold your answer. We'll return to it at the end — and you'll have more to say about it than you do right now.</p>
+    <button class="bp" onclick="goTo('screen-quiz');startQuiz()">Let's find out →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="screen-quiz" class="screen">
+  <div class="prog"><div class="prog-fill" id="prog"></div></div>
+  <div class="qwrap">
+    <div class="qbar">
+      <span class="qlabel">Six scenarios · Australia</span>
+      <span class="qcount">Question <strong id="qnum">1</strong> of 6</span>
+    </div>
+    <div id="qbody"></div>
+    <div class="nav"><div></div><button class="bn" id="btn-next" onclick="nextQ()" disabled>Next →</button></div>
+  </div>
+</div>
+
+<!-- SCENES -->
+<div id="screen-scenes" class="screen">
+  <div class="scwrap">
+    <div class="sc-head">
+      <div class="tag" style="margin-bottom:.5rem">Three scenes</div>
+      <h2 class="sc-title">Something went wrong.<br><em>Can you fix it?</em></h2>
+      <p class="sc-desc">In each scene, something culturally awkward happens. Find it — then work out how it should have gone.</p>
+    </div>
+
+    <div class="frame">
+      <span class="tag">Before you read</span>
+      <div class="frame-title">Whose Australia are we talking about?</div>
+      <div class="frame-body">
+        Australia is one of the most multicultural countries on earth. <em>More than half of all Australians were either born overseas, or have at least one parent who was.</em> Melbourne has large Vietnamese, Chinese, Lebanese, Greek, and Indian communities who have shaped the city profoundly. First- and second-generation Australians often navigate two cultural codes at once.<br><br>
+        And beneath all of this: <em>Indigenous Australians have lived on this continent for over 65,000 years</em> — the world's oldest continuing cultures. Most Australians who pride themselves on mateship and a fair go have never had a conversation with an Indigenous Australian. That gap between the national self-image and the reality is one of the most significant unresolved facts about the country.
+      </div>
+      <div class="frame-q">When we describe "Australian norms" — whose norms are we actually describing? And who gets to decide what belonging looks like?</div>
+    </div>
+
+    <!-- Scene 1 -->
+    <div class="sc-card">
+      <div class="sc-num">Scene 1 · Melbourne, first day of work experience</div>
+      <div class="sc-card-title">The compliment</div>
+      <div class="sc-setup">Leo (from Germany) starts work experience at a Melbourne marketing company. He's been in Australia three years and his English is fluent. His supervisor Jade introduces herself.</div>
+      <div class="exchange">
+        <div class="line a"><span class="spk">Jade</span>Hey Leo! Welcome — really glad to have you here.</div>
+        <div class="line b"><span class="spk">Leo</span>Thanks, Jade. I've actually looked into the company quite a bit — the results your team got last year were seriously impressive. You must be really proud of what you've built.</div>
+        <div class="line a"><span class="spk">Jade</span><em>small laugh, glances at her shoes</em>&ensp;Ha — yeah, cheers. We just got lucky, honestly. Anyway — let me show you your desk.</div>
+      </div>
+      <div class="prob-flag">What went wrong?</div>
+      <div class="prob-body">
+        Leo's English is fine. His intentions are good. But <strong>a sincere, specific compliment directed at someone you've just met makes Australians uncomfortable.</strong> It puts them on the spot — it feels like a performance review rather than a greeting.<br><br>
+        Jade's response — deflecting, attributing success to luck, physically looking away — is completely standard. It's not false modesty. It's the tall poppy reflex: <strong>no one should stand too far above the crowd, including when someone is trying to lift them there.</strong> Leo meant to connect. He created distance instead.
+      </div>
+      <div class="task"><strong>Your turn:</strong> Rewrite Leo's line. Same warmth, different approach — what does he say, and what does he leave out entirely?</div>
+    </div>
+
+    <!-- Scene 2 -->
+    <div class="sc-card">
+      <div class="sc-num">Scene 2 · Melbourne, pub after work</div>
+      <div class="sc-card-title">The round</div>
+      <div class="sc-setup">Priya moved to Australia from India three years ago and started at a new company last month. Four colleagues invite her for drinks on Friday. It's her first time out with them.</div>
+      <div class="exchange">
+        <div class="line a"><span class="spk">Tom</span>Right — I'll grab the first round. What are we having?</div>
+        <div class="line b"><span class="spk">Priya</span>Oh — honestly, don't worry about me, I can just— sorry, I don't want to— I'll just get my own, it's easier—</div>
+        <div class="line a"><span class="spk">Tom</span>Nah, come on. What are you having?</div>
+        <div class="line b"><span class="spk">Priya</span><em>quietly</em>&ensp;Just a lemon squash, thanks.</div>
+        <div class="line a"><span class="spk">Tom</span><em>to the others, once she turns away</em>&ensp;Is she all right?</div>
+      </div>
+      <div class="prob-flag">What went wrong?</div>
+      <div class="prob-body">
+        Priya isn't being rude — she's flustered. She doesn't have the script for this situation and it shows. But the effect is the same: <strong>she's declined to enter a social system she didn't know existed.</strong><br><br>
+        Shouting rounds isn't personal generosity. Tom isn't being kind to Priya specifically — he's opening a rotation: I buy this round, you buy the next. Everyone participates. Refusing to enter the system — even awkwardly, even politely — reads as not wanting to be part of the group.<br><br>
+        The right move is simple: <strong>accept the drink, and signal you understand the contract.</strong>
+      </div>
+      <div class="task"><strong>Your turn:</strong> Replace Priya's first response with one line that works. Here's a model: <em>"Can't this week, but I'm in next time."</em> — what does that line do that Priya's version doesn't?</div>
+    </div>
+
+    <!-- Scene 3 -->
+    <div class="sc-card">
+      <div class="sc-num">Scene 3 · Melbourne, Friday afternoon, office</div>
+      <div class="sc-card-title">The sweep</div>
+      <div class="sc-setup">It's Melbourne Cup day. Marek is in his third week at an Australian company. He drinks, happily. He has seen things. But this is new.</div>
+      <div class="exchange">
+        <div class="line a"><span class="spk">Jess</span>Marek — you in the sweep? Five bucks, random horse.</div>
+        <div class="line b"><span class="spk">Marek</span>Sorry — the sweep?</div>
+        <div class="line a"><span class="spk">Jess</span>Melbourne Cup. Horse race. You get a random horse, five bucks.</div>
+        <div class="line c"><span class="spk">Boss</span><em>from across the room, already holding a beer at 3pm</em>&ensp;Marek, you have to do the sweep. It's basically illegal not to.</div>
+        <div class="line b"><span class="spk">Marek</span><em>looking at the colleagues with drinks, the TAB app open on Jess's phone, the boss</em>&ensp;...Is this normal?</div>
+        <div class="line a"><span class="spk">Jess</span>It's the Cup, mate.</div>
+      </div>
+      <div class="prob-flag">What's actually happening here?</div>
+      <div class="prob-body">
+        Marek isn't shocked by the drinking — he's Czech. He's shocked by everything else.<br><br>
+        <strong>Australia has the highest gambling losses per capita in the world.</strong> But the gambling isn't in casinos — it's in pubs, sports clubs, and on your phone via the TAB, a government-run betting agency as unremarkable as a post office. The Melbourne Cup sweep is so embedded in workplace culture that opting out feels genuinely antisocial.<br><br>
+        The boss having a beer at 3pm on a Friday is also completely normal. <strong>The line between pub culture and workplace culture in Australia is much thinner than in most of Europe.</strong> None of this registers as unusual. Whether it should be is a different question.
+      </div>
+      <div class="task"><strong>Your turn:</strong> Marek decides to join in. Write his next two lines — how does he enter the sweep in a way that sounds natural rather than reluctant or overly formal?</div>
+    </div>
+
+    <div class="nav" style="border-top:none;margin-top:.5rem;">
+      <button class="bs" onclick="goTo('screen-quiz');startQuiz()">← Back to quiz</button>
+      <button class="bp" onclick="goTo('screen-exit-1')">Finish →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXIT 1 — quote returns -->
+<div id="screen-exit-1" class="screen exit-screen">
+  <div class="exit-inner">
+    <div class="exit-tag">Back to where we started</div>
+    <p class="exit-quote">"Australians aren't actually friendly.<br>They just pretend to be."</p>
+    <p class="exit-body">Now you've been through the scenarios — <strong>do you still agree?</strong><br>Has anything shifted?</p>
+    <div class="exit-nav">
+      <button class="blight" onclick="goTo('screen-exit-2')">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXIT 2 — what the Czech student got wrong -->
+<div id="screen-exit-2" class="screen exit-screen">
+  <div class="exit-inner">
+    <div class="exit-panel-tag">What the Czech student got wrong</div>
+    <p class="exit-body">
+      Australian friendliness isn't performance. It comes from a genuine belief that <strong>everyone deserves a fair go — regardless of background or status.</strong> When a stranger chats to you in a queue, or a barista asks how you're going, that warmth is real.<br><br>
+      But it goes sideways, not toward you. It says <em>we're all in this together</em> — not <em>I want you to like me.</em> American warmth is expressive and aimed at you: effusive, directed, performing intimacy it may not mean. Australian warmth doesn't do that. The Czech student was reading the absence of escalation as the absence of feeling. That's the misread.
+    </p>
+    <div class="exit-nav">
+      <button class="blight" onclick="goTo('screen-exit-3')">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXIT 3 — what the Czech student got right -->
+<div id="screen-exit-3" class="screen exit-screen">
+  <div class="exit-inner">
+    <div class="exit-panel-tag">What the Czech student got right</div>
+    <p class="exit-body">
+      <strong>Australian friendliness is wide and doesn't go deep quickly.</strong><br><br>
+      Turning easy warmth into actual friendship takes time, consistency, and repeated low-pressure contact — not one intense bonding moment. The warmth is genuine. It is also genuinely not an invitation to get close. Both things are true at once, and that's exactly what the Czech student found confusing. They weren't wrong. They were just expecting a different architecture.
+    </p>
+    <div class="exit-nav">
+      <button class="blight" onclick="goTo('screen-exit-4')">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXIT 4 — the bigger picture -->
+<div id="screen-exit-4" class="screen exit-screen">
+  <div class="exit-inner">
+    <div class="exit-panel-tag">The bigger picture</div>
+    <p class="exit-body">
+      Dr Anne Aly — an Egyptian-Australian Muslim woman, Australia's Minister for Multicultural Affairs, and the first Muslim woman elected to Australia's federal parliament — has said: <strong>"To those few who say immigrants should 'go home,' I say: we are home."</strong><br><br>
+      More than half of all Australians were born overseas or have a parent who was. And yet most Australians who pride themselves on mateship and the fair go have never had a conversation with an Indigenous Australian — whose cultures have been here for over 65,000 years. The national self-image and the national reality are still some distance apart.
+    </p>
+    <div class="exit-nav">
+      <button class="blight" onclick="goTo('screen-exit-5')">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXIT 5 — open question -->
+<div id="screen-exit-5" class="screen exit-screen">
+  <div class="exit-inner">
+    <div class="exit-tag">One last question</div>
+    <p class="exit-open">
+      "Australians aren't actually friendly.<br>They just pretend to be."<br><br>
+      How would you rewrite that now?
+    </p>
+    <div class="exit-nav">
+      <button class="bp" onclick="goTo('screen-hook')">Start again ↺</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const qs=[
+  {
+    loc:"Sydney, café queue",
+    text:"You're waiting to order coffee. The barista catches your eye and says, \"How ya going?\" You've never met them.",
+    q:"What does the barista expect you to say?",
+    opts:[
+      "\"Good, thanks — flat white please\"",
+      "Tell them honestly — it's been a rough morning",
+      "\"Very well, thank you for asking\"",
+      "Nothing — a nod is enough"
+    ],
+    correct:0,
+    reveal:"<strong>\"How ya going?\"</strong> is not an inquiry — it's a greeting. The expected response is brief and warm: \"Good, you?\" or \"Not bad, cheers.\" Actually answering the question creates a social pile-up — the barista has already moved on. This isn't coldness. It's a different script built around the same warm instinct: putting people at ease without obligation.",
+    crit:null
+  },
+  {
+    loc:"Melbourne office, first week",
+    text:"Your new manager introduces herself as Dr Sarah Chen. She then says: \"Call me Sarah — everyone does here.\"",
+    q:"What should you do?",
+    opts:[
+      "Wait and see what others do before committing",
+      "Ask whether she prefers her title in formal emails",
+      "Continue using \"Dr Chen\" — it shows proper respect",
+      "Call her Sarah, as she asked"
+    ],
+    correct:3,
+    reveal:"<strong>Egalitarianism is a core Australian value</strong> — not a workplace HR policy. When someone with a title asks you to use their first name, continuing to use the title signals you're not listening, or that you're making the relationship about rank. Australian managers often give instructions as polite requests — \"Do you think you could...\" — but everyone understands those are still directions. The informality is genuine. The hierarchy is just quieter.",
+    crit:null
+  },
+  {
+    loc:"Melbourne, dinner party",
+    text:"You've spent all afternoon making an impressive meal for Australian friends. One says: \"Oh my god — you're such a brilliant cook!\" You're quietly proud of it.",
+    q:"What's the most natural Australian response?",
+    opts:[
+      "\"Yes, cooking is something I take quite seriously\"",
+      "\"Oh, it's nothing — I just threw it together\"",
+      "Smile warmly and change the subject",
+      "\"Thank you — I worked hard on it, really glad it landed\""
+    ],
+    correct:1,
+    reveal:"<strong>Tall Poppy Syndrome</strong>: even honestly accepting a compliment can read as arrogant in Australia. The expected move is to deflect and minimise. \"I just threw it together\" is completely false, but socially smooth — everyone understands the modesty is ritual, not literal. Europeans often find this odd, and they're not wrong to. There's something genuinely strange about a culture that makes people perform humility about things they've actually earned.",
+    crit:"Does this norm end up punishing real achievement? Some Australians think so — particularly for women and people from non-Anglo backgrounds who've worked hard and deserve to own it. The ritual lands most smoothly when your status is already assumed."
+  },
+  {
+    loc:"Melbourne pub, Friday evening",
+    text:"Your colleague buys the first round of drinks for five people. A while later it's clearly your turn. You're a bit short on cash this week.",
+    q:"What's the right move?",
+    opts:[
+      "Buy a cheaper round than your colleague did",
+      "Quietly skip your round — probably no one notices",
+      "Say you're short this week and offer to get the next one",
+      "Offer soft drinks to keep the cost down"
+    ],
+    correct:2,
+    reveal:"<strong>Shouting rounds is a social contract.</strong> Your colleague isn't being generous — they're opening a rotation. Everyone participates. Quietly skipping your turn is noticed and remembered. The honest move — \"I'm a bit short this week, I'll get the next one\" — is completely respected. What's not respected is benefiting from the system while pretending you're not in it.",
+    crit:null
+  },
+  {
+    loc:"Brisbane, work barbecue",
+    text:"A colleague says, completely deadpan: \"Oh brilliant — another Monday. Absolute favourite day of the week.\" She's smiling slightly.",
+    q:"What is she actually communicating?",
+    opts:[
+      "She's complaining and wants sympathy",
+      "She's testing whether you're paying attention",
+      "She genuinely loves Mondays",
+      "She's being sarcastic — dry humour, she's relaxed"
+    ],
+    correct:3,
+    reveal:"<strong>Australian dry humour runs on deadpan sarcasm used as warmth.</strong> \"Brilliant\" meaning the opposite is completely standard. Responding with genuine concern — \"Oh no, are you okay?\" — breaks the tone. The fluent move is to match the energy. Being lightly teased in Australia often means someone likes you. Self-deprecating jokes are one of the fastest ways to fit in — just don't agree too enthusiastically when someone puts themselves down.",
+    crit:null
+  },
+  {
+    loc:"Melbourne, shared house kitchen",
+    text:"It's your first week. Your housemate Dev sees you carefully reading the instructions on the back of a Vegemite jar. He says, completely deadpan: \"Don't worry about that — just eat it straight off the spoon. Big scoop. You'll be fine.\" He's watching you with a straight face.",
+    q:"What is Dev doing?",
+    opts:[
+      "Testing whether you'll trust him — it's a trap",
+      "Trying to make you look foolish in front of others",
+      "Taking the piss — it's an invitation, not an attack",
+      "Giving you genuine advice"
+    ],
+    correct:2,
+    reveal:"<strong>Being teased by an Australian you've just met is often a sign of warmth, not hostility.</strong> The joke only works if Dev thinks you can handle it — which means he already likes you enough to try. Responding with mock outrage or playing along is the fluent move. Taking it literally, or taking offence, closes the door. The larrikin — the person who takes the piss, bends the rules, doesn't take hierarchy seriously — is a national archetype. It's not cruelty. It's contact.",
+    crit:"That said — who gets teased this way, and who doesn't? The same banter directed at someone already on the margins of a group can land very differently. Context always matters."
+  }
+];
+
+let cur=0,done=false;
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startQuiz(){cur=0;renderQ();}
+
+function renderQ(){
+  done=false;
+  const q=qs[cur];
+  document.getElementById('qnum').textContent=cur+1;
+  document.getElementById('prog').style.width=((cur/qs.length)*100)+'%';
+  const btn=document.getElementById('btn-next');
+  btn.disabled=true;
+  btn.textContent=cur<qs.length-1?'Next →':'Scenes →';
+  const critHtml=q.crit?`<div class="crit" id="crit">${q.crit}</div>`:'';
+  document.getElementById('qbody').innerHTML=`
+    <div class="scene">
+      <div class="scene-loc">${q.loc}</div>
+      <div class="scene-text">${q.text}</div>
+    </div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="opts" id="opts">${q.opts.map((o,i)=>`<button class="opt" onclick="pick(${i})">${o}</button>`).join('')}</div>
+    <div class="reveal" id="rev">${q.reveal}</div>
+    ${critHtml}
+  `;
+}
+
+function pick(i){
+  if(done)return;
+  done=true;
+  const q=qs[cur];
+  document.querySelectorAll('.opt').forEach((b,idx)=>{
+    b.disabled=true;
+    if(idx===q.correct)b.classList.add('correct');
+    else if(idx===i&&i!==q.correct)b.classList.add('wrong');
+  });
+  document.getElementById('rev').classList.add('on');
+  if(q.crit)document.getElementById('crit').classList.add('on');
+  document.getElementById('btn-next').disabled=false;
+}
+
+function nextQ(){
+  cur++;
+  if(cur<qs.length)renderQ();
+  else{document.getElementById('prog').style.width='100%';goTo('screen-scenes');}
+}
+</script>
+</body>
+</html>
