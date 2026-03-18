@@ -20,8 +20,11 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Instrument Sans',sans-serif;background:var(--sand);color:var(--ink);min-height:100vh;overflow-x:hidden;}
-.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen{display:none;flex-direction:column;}
 .screen.active{display:flex;}
+/* full-height only for centred dark screens */
+#screen-hook,
+#screen-exit-1,#screen-exit-2,#screen-exit-3,#screen-exit-4,#screen-exit-5{min-height:100vh;}
 .tag{font-size:.56rem;letter-spacing:.32em;text-transform:uppercase;font-weight:600;color:var(--sun);}
 
 .bp{background:var(--rust);color:var(--cream);border:none;padding:.92rem 2.3rem;font-family:'Instrument Sans',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
