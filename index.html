@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fair Go — Australian Culture &amp; Communication</title>
+<title>Fair Go — Australian Culture, Communication &amp; Identity</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,900;1,9..144,300;1,9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -19,12 +19,9 @@
   --ink:   #1C1208;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Instrument Sans',sans-serif;background:var(--dark);color:var(--ink);overflow-x:hidden;}
-.screen{display:none;flex-direction:column;}
+body{font-family:'Instrument Sans',sans-serif;background:var(--sand);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
 .screen.active{display:flex;}
-/* full-height only for centred dark screens */
-#screen-hook,
-#screen-exit-1,#screen-exit-2,#screen-exit-3,#screen-exit-4,#screen-exit-5{min-height:100vh;}
 .tag{font-size:.56rem;letter-spacing:.32em;text-transform:uppercase;font-weight:600;color:var(--sun);}
 
 .bp{background:var(--rust);color:var(--cream);border:none;padding:.92rem 2.3rem;font-family:'Instrument Sans',sans-serif;font-size:.68rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;border-radius:1px;transition:all .18s;}
@@ -49,21 +46,20 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--dark);color:var(-
 .hook-prompt strong{color:var(--sand);}
 
 /* QUIZ */
-#screen-quiz{background:var(--cream);height:100vh;overflow:hidden;}
-#screen-scenes{background:var(--sand);}
-.prog{height:2px;background:rgba(28,18,8,.07);flex-shrink:0;}
+#screen-quiz{background:var(--cream);}
+.prog{height:2px;background:rgba(28,18,8,.07);}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--rust),var(--sun));transition:width .5s ease;}
-.qwrap{padding:1.8rem 2rem;flex:1;overflow-y:auto;display:flex;flex-direction:column;}
+.qwrap{padding:1.8rem 2rem;flex:1;overflow-y:auto;}
 .qbar{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.8rem;padding-bottom:.9rem;border-bottom:1px solid var(--mist);}
 .qlabel{font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;font-weight:600;color:var(--sun);}
 .qcount{font-family:'Fraunces',serif;font-weight:300;font-size:1.2rem;color:var(--stone);}
 .qcount strong{color:var(--ink);font-weight:600;}
-.scene{background:var(--dark);border-radius:2px;padding:1.7rem 1.9rem 1.6rem;margin-bottom:1.5rem;position:relative;overflow:hidden;flex-shrink:0;}
+.scene{background:var(--dark);border-radius:2px;padding:1.7rem 1.9rem 1.6rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
 .scene::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rust),var(--sun) 55%,transparent);}
 .scene-loc{font-size:.54rem;letter-spacing:.28em;text-transform:uppercase;color:var(--sun);margin-bottom:.65rem;font-weight:600;}
 .scene-text{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(1.05rem,2.8vw,1.25rem);color:var(--cream);line-height:1.65;}
 .quiz-q{font-size:.96rem;font-weight:600;margin-bottom:1.1rem;line-height:1.5;color:var(--ink);}
-.opts{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.3rem;flex-shrink:0;}
+.opts{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.3rem;}
 .opt{background:var(--sand);border:1.5px solid var(--mist);border-radius:2px;padding:.82rem 1.1rem;text-align:left;cursor:pointer;font-family:'Instrument Sans',sans-serif;font-size:.87rem;line-height:1.5;color:var(--ink);transition:all .14s;}
 .opt:hover:not(:disabled){border-color:var(--rust);background:#f7ede7;}
 .opt.correct{border-color:var(--bush);background:#ecf0e8;color:var(--bush);font-weight:600;}
@@ -78,6 +74,7 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--dark);color:var(-
 .nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.3rem;padding-top:1rem;border-top:1px solid var(--mist);}
 
 /* SCENES */
+#screen-scenes{background:var(--sand);}
 .scwrap{padding:1.8rem 2rem;overflow-y:auto;}
 .sc-head{margin-bottom:1.6rem;}
 .sc-title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.6rem,5vw,2.4rem);line-height:1.12;margin-bottom:.35rem;}
@@ -129,7 +126,10 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--dark);color:var(-
 <!-- HOOK -->
 <div id="screen-hook" class="screen active">
   <div class="hook-inner">
-    <div class="hook-eyebrow">Australian culture · Communication &amp; society</div>
+    <div class="hook-eyebrow">Australian culture · Communication, society &amp; identity</div>
+    <p class="hook-prompt" style="margin-bottom:1.4rem;color:rgba(250,246,238,.5);font-size:.82rem;">Before we start — a question.</p>
+    <p class="hook-quote" style="font-size:clamp(1.1rem,3.5vw,1.55rem);margin-bottom:2rem;">When you picture an Australian,<br>what do you see?</p>
+    <p class="hook-prompt" style="margin-bottom:2.2rem;">Melbourne and Sydney are among the most ethnically diverse cities on earth. Whatever their background — Vietnamese, Lebanese, Greek, Indian, Sudanese — Australians sound Australian. The accent varies: there's a recognisably Greek-Australian sound, a Lebanese-Australian sound. But the substrate is unmistakably the same. <strong>You can hear both where someone's family came from, and where they're from.</strong><br><br>The image most people carry of Australia hasn't caught up with that reality. This lesson is partly about the gap.</p>
     <p class="hook-quote">"Australians aren't actually friendly.<br>They just <em>pretend</em> to be."</p>
     <div class="hook-attr">— A Czech student, six months after moving to Sydney</div>
     <p class="hook-prompt"><strong>Do you agree?</strong><br>Hold your answer. We'll return to it at the end — and you'll have more to say about it than you do right now.</p>
@@ -163,8 +163,7 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--dark);color:var(-
       <span class="tag">Before you read</span>
       <div class="frame-title">Whose Australia are we talking about?</div>
       <div class="frame-body">
-        Australia is one of the most multicultural countries on earth. <em>More than half of all Australians were either born overseas, or have at least one parent who was.</em> Melbourne has large Vietnamese, Chinese, Lebanese, Greek, and Indian communities who have shaped the city profoundly. First- and second-generation Australians often navigate two cultural codes at once.<br><br>
-        And beneath all of this: <em>Indigenous Australians have lived on this continent for over 65,000 years</em> — the world's oldest continuing cultures. Most Australians who pride themselves on mateship and a fair go have never had a conversation with an Indigenous Australian. That gap between the national self-image and the reality is one of the most significant unresolved facts about the country.
+        And beneath the surface of these norms: <em>Indigenous Australians have lived on this continent for over 65,000 years</em> — the world's oldest continuing cultures. Most Australians who pride themselves on mateship and a fair go have never had a conversation with an Indigenous Australian. That gap between the national self-image and the reality is one of the most significant unresolved facts about the country.
       </div>
       <div class="frame-q">When we describe "Australian norms" — whose norms are we actually describing? And who gets to decide what belonging looks like?</div>
     </div>
@@ -277,13 +276,15 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--dark);color:var(-
   </div>
 </div>
 
-<!-- EXIT 4 — the bigger picture -->
+<!-- EXIT 4 — the bigger picture / identity merged -->
 <div id="screen-exit-4" class="screen exit-screen">
   <div class="exit-inner">
     <div class="exit-panel-tag">The bigger picture</div>
     <p class="exit-body">
-      Dr Anne Aly — an Egyptian-Australian Muslim woman, Australia's Minister for Multicultural Affairs, and the first Muslim woman elected to Australia's federal parliament — has said: <strong>"To those few who say immigrants should 'go home,' I say: we are home."</strong><br><br>
-      More than half of all Australians were born overseas or have a parent who was. And yet most Australians who pride themselves on mateship and the fair go have never had a conversation with an Indigenous Australian — whose cultures have been here for over 65,000 years. The national self-image and the national reality are still some distance apart.
+      Australia has done something genuinely difficult: built a multicultural society that largely works. Communities from radically different origins share cities, workplaces, and social norms — and have made those norms their own. That's not nothing. By global standards, it's remarkable — which makes the gap that remains more pointed, not less.<br><br>
+      Dr Anne Aly — Egyptian-Australian, Muslim, the first Muslim woman elected to Australia's federal parliament — has said: <strong>"To those few who say immigrants should 'go home,' I say: we are home."</strong> That sentence lands differently when you understand how deep the settlement actually goes.<br><br>
+      Most Australians who pride themselves on mateship and the fair go have never had a conversation with an Indigenous Australian — whose cultures have been here for over 65,000 years. The norms in this lesson are easiest to perform when your presence isn't already in question. Every culture has norms that function as <strong>tests of belonging</strong> — and every culture makes those tests easier for some people than others.<br><br>
+      The question isn't whether Australia does this. The question is <strong>whether it knows it does.</strong>
     </p>
     <div class="exit-nav">
       <button class="blight" onclick="goTo('screen-exit-5')">Next →</button>
@@ -297,7 +298,7 @@ body{font-family:'Instrument Sans',sans-serif;background:var(--dark);color:var(-
     <div class="exit-tag">One last question</div>
     <p class="exit-open">
       "Australians aren't actually friendly.<br>They just pretend to be."<br><br>
-      How would you rewrite that now?
+      You started this lesson with a picture of Australia in your head.<br>How would you rewrite that sentence now — and <em>whose</em> Australia are you writing about?
     </p>
     <div class="exit-nav">
       <button class="bp" onclick="goTo('screen-hook')">Start again ↺</button>
@@ -361,7 +362,7 @@ const qs=[
     ],
     correct:2,
     reveal:"<strong>Shouting rounds is a social contract.</strong> Your colleague isn't being generous — they're opening a rotation. Everyone participates. Quietly skipping your turn is noticed and remembered. The honest move — \"I'm a bit short this week, I'll get the next one\" — is completely respected. What's not respected is benefiting from the system while pretending you're not in it.",
-    crit:null
+    crit:"But notice what the system assumes: that everyone has roughly the same disposable income, the same relationship with alcohol, and the same cultural script for group belonging. For someone newer to Australia, from a different background, or simply less flush — entering the rotation isn't just a social move. It's an identity negotiation. Priya's scene, earlier, wasn't really about drinks."
   },
   {
     loc:"Brisbane, work barbecue",
